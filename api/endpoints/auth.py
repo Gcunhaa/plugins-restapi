@@ -10,10 +10,15 @@ router = APIRouter()
 
 @router.post("/")
 async def auth_login(*,db : Session = Depends(deps.get_db),email : str, password: str) -> Any:
-    user = crud_user.user.authentificate(db,email=email,password=password)
-    if user == None:
-      raise HTTPException(status_code=401,detail="Email ou senha incorreto")
-    return "foi"
+  """
+    Fazer login
+  """
+  user = crud_user.user.authentificate(db,email=email,password=password)
+  
+  if user == None:
+    raise HTTPException(status_code=401,headers={"WWW-Authentification" : "Token"})
+  
+  return security.generate_token()
 
 @router.delete("/")
 async def auth_logout():
