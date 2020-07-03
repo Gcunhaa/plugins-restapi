@@ -12,4 +12,4 @@ class User(Base):
     email = Column(String, index = True, unique = True)
     is_active = Column(Boolean)
 
-    plugins = relationship("Plugin", back_populates="owner")  
+    #plugins = relationship("Plugin", back_populates="owner")  

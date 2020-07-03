@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr
 
-from models.plugin import Plugin
+from schemas.plugins import Plugin
 
 class UserBase(BaseModel):
     username : Optional[str]
@@ -25,9 +25,8 @@ class UserInDBBase(UserBase):
 
 
 class User(UserInDBBase):
-  #  plugins : List[Plugin] = []
-  pass
-
+    #plugins : List[Plugin] = []
+    pass
 
 class UserInDB(UserInDBBase):
     hashed_password: str
