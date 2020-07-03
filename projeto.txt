@@ -1,0 +1,32 @@
+#AUTH
+
+/authorization
+   post: username and password / response: token
+   delete: token 
+
+#USERS
+
+/users/
+   get: list of users
+   post: create user-
+
+/users/me
+   get: info from currentuser
+   patch: update currentuser
+
+/users/<user_id>
+   get: info from user
+   patch: update user info
+
+
+#PLUGINS
+
+/plugins/
+   get: list of plugins
+   post: create plugin
+
+/plugins/<user_id>
+   get: info from plugin
+   patch: update plugin info
+
+
