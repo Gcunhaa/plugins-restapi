@@ -13,6 +13,7 @@ class UserCreate(UserBase):
     email : EmailStr
     username : str
     password : str 
+    is_active: bool = True
 
 class UserUpdate(UserBase):
     password : Optional[str]

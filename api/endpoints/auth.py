@@ -27,12 +27,11 @@ async def auth_login(*,db : Session = Depends(deps.get_db) ,email : EmailStr = B
   return redis_token.log_in(r=r,user_id=user.id,token=token)
 
 @router.delete("/", status_code=201) 
-async def auth_logout(*, access_token : str = Header(None))-> None:
+async def auth_logout(*, token : str =  Depends(security.verify_token))-> Any:
+    """[summary]
+        Fazer logout
+    """
     r = connection.redisconn
-    
-    token = Token(**{"access_token": access_token})
-
-    if not redis_token.log_out(r=r,token=token):
-      raise HTTPException(status_code=401,headers={"WWW-Authentification" : "Token"})
+    redis_token.log_out(r=r,token=token)
 
     return "Logout realizado com sucesso"

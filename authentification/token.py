@@ -10,8 +10,8 @@ class REDISToken():
 
         return Token(access_token = token)
 
-    def log_out(self,r: Redis, *, token: Token) -> bool:
-        return r.delete(token.access_token)
+    def log_out(self,r: Redis, *, token: str) -> bool:
+        return r.delete(token)
 
     def authorization(self, r: Redis, *, token: Token) -> bool:
         return r.exists(token)

@@ -1,5 +1,5 @@
 import secrets
-from typing import Optional
+from typing import Optional, Any
 from passlib.context import CryptContext
 from redis import Redis
 from fastapi import HTTPException, Header
@@ -11,7 +11,7 @@ pwd_context = CryptContext(schemes=["bcrypt"],deprecated = "auto")
 
 ALGORITHM = "HS256"
 
-def verify_token(*,authorization: str )-> Optional[str]:
+def verify_token(*,authorization: str = Header(...))-> Optional[str]:
     token = get_token(authorization=authorization)
     if not redis_token.authorization(r=redisconn,token=token):
         raise HTTPException(status_code=401,detail={"unauthorized_client":"The authenticated client is not authorized to use this authorization grant type."})

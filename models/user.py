@@ -10,6 +10,6 @@ class User(Base):
     username = Column(String, index = True, unique = True)
     password = Column(String)
     email = Column(String, index = True, unique = True)
-    is_active = Column(Boolean)
+    is_active = Column(Boolean, default=True)
 
     #plugins = relationship("Plugin", back_populates="owner")  

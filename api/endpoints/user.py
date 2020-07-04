@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter,Depends,HTTPException
+from fastapi import APIRouter,Depends,HTTPException, Header
 from sqlalchemy.orm import Session
 
 from typing import Any, Optional
@@ -30,16 +30,15 @@ async def create_user(*,db : Session = Depends(deps.get_db), user_in: UserCreate
     if crud_user.user.get_by_username(db,username= user_in.username):
         raise HTTPException(
                 status_code=400,
-                detail="Já há um usuário com esse usuário")
+                detail="Nome de usupario já em uso")
 
     obj = crud_user.user.create(db, obj_in= user_in)
     return obj
 
-@router.post("/me")
-async def get_user_me(*,token : str = Depends(security.verify_token),db : Session = Depends(deps.get_db)) -> Optional[User]:
+@router.get("/me")
+async def get_user_me(*,token : str =  Depends(security.verify_token),db : Session = Depends(deps.get_db)) -> Optional[User]:
     """
        Informações usuario dono do token
     """
-
     user = crud_user.user.get_by_token(db=db,r=redisconn,token=token)
     return user
