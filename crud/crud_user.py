@@ -33,7 +33,7 @@ class CRUDUser(CRUDBase[User,UserCreate,UserUpdate]):
         return db.query(User).filter(User.username == username).first()
     
     def get_by_token(self,db: Session, r: Redis,*, token : str) -> Optional[User]:
-        user_id = redis_token.get_user_id(str)
+        user_id = redis_token.get_user_id(r=r,token=token)
         if not user_id:
             return None
         return self.get_by_id(db = db,user_id = user_id)

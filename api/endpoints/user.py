@@ -2,13 +2,18 @@
 from fastapi import APIRouter,Depends,HTTPException
 from sqlalchemy.orm import Session
 
-from typing import Any
+from typing import Any, Optional
 
 from api import deps
 from crud import crud_user
-from schemas.user import UserCreate
+from schemas.user import UserCreate, User
+from authentification.token import redis_token
+from authentification.connection import redisconn
+from core import security
 
 router = APIRouter()
+
+
 
 @router.post("/")
 async def create_user(*,db : Session = Depends(deps.get_db), user_in: UserCreate) -> Any:
@@ -29,3 +34,12 @@ async def create_user(*,db : Session = Depends(deps.get_db), user_in: UserCreate
 
     obj = crud_user.user.create(db, obj_in= user_in)
     return obj
+
+@router.post("/me")
+async def get_user_me(*,token : str = Depends(security.verify_token),db : Session = Depends(deps.get_db)) -> Optional[User]:
+    """
+       Informações usuario dono do token
+    """
+
+    user = crud_user.user.get_by_token(db=db,r=redisconn,token=token)
+    return user

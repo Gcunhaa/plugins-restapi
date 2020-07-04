@@ -13,8 +13,11 @@ class REDISToken():
     def log_out(self,r: Redis, *, token: Token) -> bool:
         return r.delete(token.access_token)
 
-    def get_user_id(self,r: Redis,*,token : Token) -> Optional[str]:
-        return r.get(token.access_token)
+    def authorization(self, r: Redis, *, token: Token) -> bool:
+        return r.exists(token)
+
+    def get_user_id(self,r: Redis,*,token : str) -> Optional[str]:
+        return r.get(token)
     
 
 redis_token = REDISToken()
